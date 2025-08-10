@@ -1,0 +1,43 @@
+*.sqlite*
+# Laravel vendor এবং node_modules বাদ
+/vendor/
+/node_modules/
+
+# Laravel cache এবং logs বাদ
+/storage/*.key
+/storage/app/public
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+/bootstrap/cache/*
+
+# Environment files বাদ
+.env
+.env.*
+!.env.example
+
+# Public storage এবং build files বাদ
+/public/hot
+/public/storage
+/public/mix-manifest.json
+
+# Laravel test cache বাদ
+.phpunit.result.cache
+/phpunit.xml
+
+# IDE / Editor files বাদ
+/.idea
+/.vscode
+*.sublime-project
+*.sublime-workspace
+
+# OS junk files বাদ
+.DS_Store
+Thumbs.db
+
+# NPM / Yarn error logs বাদ
+npm-debug.log
+yarn-error.log
+
+# আপনার কাস্টম ফোল্ডার বাদ
