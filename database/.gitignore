@@ -1,9 +1,11 @@
+# SQLite database remove
 *.sqlite*
-# Laravel vendor এবং node_modules বাদ
+
+# Laravel vendor and node_modules remove
 /vendor/
 /node_modules/
 
-# Laravel cache এবং logs বাদ
+# Laravel cache and logs remove
 /storage/*.key
 /storage/app/public
 /storage/framework/cache/*
@@ -12,32 +14,42 @@
 /storage/logs/*
 /bootstrap/cache/*
 
-# Environment files বাদ
+# Environment files remove
 .env
 .env.*
 !.env.example
 
-# Public storage এবং build files বাদ
-/public/hot
-/public/storage
-/public/mix-manifest.json
+# Public build output remove
+/public/build
+/public/assets
 
-# Laravel test cache বাদ
+# Optional: jodi egulo auto-generated hoi
+/public/css
+/public/js
+/public/font
+/public/icon
+/public/images
+
+# Public folder er ei file gulo rakhte hobe
+!public/.htaccess
+!public/favicon.ico
+!public/index.php
+!public/robots.txt
+
+# Laravel test cache remove
 .phpunit.result.cache
 /phpunit.xml
 
-# IDE / Editor files বাদ
+# IDE / Editor files remove
 /.idea
 /.vscode
 *.sublime-project
 *.sublime-workspace
 
-# OS junk files বাদ
+# OS junk files remove
 .DS_Store
 Thumbs.db
 
-# NPM / Yarn error logs বাদ
+# NPM / Yarn error logs remove
 npm-debug.log
 yarn-error.log
-
-# আপনার কাস্টম ফোল্ডার বাদ
