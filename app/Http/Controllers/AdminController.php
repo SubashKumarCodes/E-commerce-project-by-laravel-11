@@ -53,4 +53,9 @@ class AdminController extends Controller
             $constraint->aspectRatio();
         })->save($destinationPath.'/'.$imageName);
     }
+
+    public function brand_edit($id){
+        $brand = Brand::find($id);
+        return view('admin.brand_edit', compact('brand'));
+    }
 }
