@@ -33,7 +33,7 @@
                             </div>
                         </form>
                     </div>
-                    <a class="tf-button style-1 w208" href="#"><i
+                    <a class="tf-button style-1 w208" href="{{ route('admin.category.add') }}"><i
                             class="icon-plus"></i>Add new</a>
                 </div>
                 <div class="wg-table table-all-user">
@@ -69,12 +69,12 @@
                                         <td><a href="#" target="_blank">0</a></td>
                                         <td>
                                             <div class="list-icon-function">
-                                                <a href="{{ route('admin.category.edit',['id'=>$category->id]) }}">
+                                                <a href="#">
                                                     <div class="item edit">
                                                         <i class="icon-edit-3"></i>
                                                     </div>
                                                 </a>
-                                                <form action="{{ route('admin.category.delete',['id'=>$category->id]) }}" method="POST">
+                                                <form action="#" method="POST">
                                                     @csrf
                                                     @method('delete')
                                                     <div class="item text-danger delete">
