@@ -241,14 +241,14 @@ class AdminController extends Controller
         }
 
         $gallery_arr = array();
-        $gallery_image = "";
+        $gallery_images = "";
         $counter = 1;
 
         if($request->hasFile('images')){
             $allowedfileExtion = ['jpg','png','jpeg'];
             $files = $request->file('images');
             foreach($files as $file){
-                $gextension = $file->getClintOriginanlExtension();
+                $gextension = $file->getClientOriginalExtension();
                 $gcheck = in_array($gextension,$allowedfileExtion);
                 if($gcheck){
                     $gfileName = $current_timestamp. "-".$gextension;
@@ -266,13 +266,13 @@ class AdminController extends Controller
 
     public function GenerateProductThumbnailImage($image, $imageName){
         $destinationPathThumbnail = public_path('uploads/products/thumbnails');
-        $destinationPath = public_path('uploads/products');
+        
         $img = Image::read($image->path());
 
         $img->cover(540,689,"top");
         $img->resize(540,689,function($constraint){
             $constraint->aspectRatio();
-        })->save($destinationPath.'/'.$imageName);
+        })->save($destinationPathThumbnail.'/'.$imageName);
 
         
     }
