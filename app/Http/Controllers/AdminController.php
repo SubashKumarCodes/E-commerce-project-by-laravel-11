@@ -198,4 +198,82 @@ class AdminController extends Controller
         return view('admin.product_add',compact('categories','brands'));
 
     }
+
+    public function product_store(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:products,slug',
+            'short_description' => 'required',
+            'description' => 'required',
+            'regular_price' => 'required',
+            'sale_price' => 'required',
+            'SKU' => 'required',
+            'stock_status' => 'required',
+            'featured' => 'required',
+            'quantity' => 'required',
+            'image' => 'required|mimes:png,jpg,jpeg|max:50048',
+            'category_id' => 'required',
+            'brand_id' => 'required'
+        ]);
+
+        $product = new Product();
+        $product->name = $request->name;
+        $product->slug = $request->slug;
+        $product->short_description = $request->short_description;
+        $product->description = $request->description;
+        $product->regular_price = $request->regular_price;
+        $product->sale_price = $request->sale_price;
+        $product->SKU = $request->SKU;
+        $product->stock_status = $request->stock_status;
+        $product->featured = $request->featured;
+        $product->quantity = $request->quantity;
+        $product->category_id = $request->category_id;
+        $product->brand_id = $request->brand_id;
+
+        $current_timestamp = Carbon::now()->timestamp;
+
+        if($request->hasFile('image')){
+
+            $image = $request->file('image');
+            $imageName = $current_timestamp.'.'.$image->extension();
+            $this->GenerateProductThumbnailImage($image,$imageName);
+            $product->image = $imageName;
+        }
+
+        $gallery_arr = array();
+        $gallery_image = "";
+        $counter = 1;
+
+        if($request->hasFile('images')){
+            $allowedfileExtion = ['jpg','png','jpeg'];
+            $files = $request->file('images');
+            foreach($files as $file){
+                $gextension = $file->getClintOriginanlExtension();
+                $gcheck = in_array($gextension,$allowedfileExtion);
+                if($gcheck){
+                    $gfileName = $current_timestamp. "-".$gextension;
+                    $this->GenerateProductThumbnailImage($file,$gfileName);
+                    array_push($gallery_arr, $gfileName);
+                    $counter = $counter + 1;
+                }
+            }
+            $gallery_images = implode(',',$gallery_arr);
+        }
+        $product->images = $gallery_images;
+        $product->save();
+        return redirect()->route('admin.products')->with('status','Product has been added successfully');
+    }
+
+    public function GenerateProductThumbnailImage($image, $imageName){
+        $destinationPathThumbnail = public_path('uploads/products/thumbnails');
+        $destinationPath = public_path('uploads/products');
+        $img = Image::read($image->path());
+
+        $img->cover(540,689,"top");
+        $img->resize(540,689,function($constraint){
+            $constraint->aspectRatio();
+        })->save($destinationPath.'/'.$imageName);
+
+        
+    }
 }
