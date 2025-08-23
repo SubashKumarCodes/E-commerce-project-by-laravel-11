@@ -131,20 +131,20 @@
                     <fieldset>
                         <div class="body-title mb-10">Upload Gallery Images</div>
                         <div class="upload-image mb-16">
-                            <!-- <div class="item">
-            <img src="images/upload/upload-1.png" alt="">
-        </div>                                                 -->
                             <div id="galUpload" class="item up-load">
                                 <label class="uploadfile" for="gFile">
                                     <span class="icon">
                                         <i class="icon-upload-cloud"></i>
                                     </span>
-                                    <span class="text-tiny">Drop your images here or select <span class="tf-color">click to browse</span></span>
-                                    <input type="file" id="gFile" name="images[]" accept="image/*" multiple="">
+                                    <span class="text-tiny">
+                                        Drop your images here or select <span class="tf-color">click to browse</span>
+                                    </span>
+                                    <input type="file" id="gFile" name="images[]" accept="image/*" multiple>
                                 </label>
                             </div>
                         </div>
                     </fieldset>
+
                     @error('images')
                         <span class="alert alert-danger text-center">{{ $message }}</span>
                     @enderror
@@ -222,35 +222,46 @@
 @endsection
 
 @push('scripts')
-    <script>
-        $(function(){
-            $("#myFile").on("change",function(e){
-                const photoInp = $("#myFile");
-                const[file]= this.files;
-                if(file){
-                    $("#imgpreview img").attr('src', URL.createObjectURL(file));
-                    $("#imgpreview").show();
-                }
-            });
-
-            $("#gFile").on("change",function(e){
-                const photoInp = $("#gFile");
-                const gphoto= this.files;
-                $.each(gphoto,function(key,val){
-                    $("#galUpload").prepend(`<div class="item gitems"><img src="${URL.createObjectURL(val)}"/></div>`);
-                });
-                
-            });
-
-            $("input[name='name']").on("change",function(){
-                $("input[name='slug']").val(StringToSlug($(this).val()));
-            });
-
-            function StringToSlug(Text){
-                return Text.toLowerCase()
-                .replace(/[^\w ]+/g,"")
-                .replace(/ +/g,"-");
+<script>
+    $(function(){
+        // Single image preview
+        $("#myFile").on("change", function(){
+            const [file] = this.files;
+            if(file){
+                $("#imgpreview img").attr('src', URL.createObjectURL(file));
+                $("#imgpreview").show();
             }
         });
-    </script>
+
+        // Multiple image preview
+        $("#gFile").on("change", function(){
+            // ager preview remove korbe
+            $("#galUpload .gitems").remove();
+
+            const files = this.files;
+
+            // protita image preview er jonno div toire kore galUpload er vitore prepend korbe
+            $.each(files, function(index, file){
+                const imgURL = URL.createObjectURL(file);
+                $("#galUpload").prepend(`
+                    <div class="item gitems">
+                        <img src="${imgURL}" alt="gallery image" />
+                    </div>
+                `);
+            });
+        });
+
+        // Auto slug generate
+        $("input[name='name']").on("change", function(){
+            $("input[name='slug']").val(StringToSlug($(this).val()));
+        });
+
+        function StringToSlug(Text){
+            return Text
+                .toLowerCase()
+                .replace(/[^\w ]+/g,"")
+                .replace(/ +/g,"-");
+        }
+    });
+</script>
 @endpush
