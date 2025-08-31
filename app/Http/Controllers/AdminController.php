@@ -256,7 +256,7 @@ class AdminController extends Controller
                     // unique name create
                     $gfileName = $current_timestamp . "-" . $index . "." . $gextension;
 
-                    // image resize ও save
+                    // image resize & save
                     $this->GenerateProductThumbnailImage($file, $gfileName);
 
                     // name array rakha
@@ -374,6 +374,32 @@ class AdminController extends Controller
         $product->save();
 
         return redirect()->route('admin.products')->with('status','Product updated successfully');
+    }
+
+
+    public function product_delete($id){
+        // product khujbe
+        $product = Product::findOrFail($id);
+
+        // delete main image
+        if($product->image && File::exists(public_path('uploads/products/thumbnails/'.$product->image))){
+            File::delete(public_path('uploads/products/thumbnails/'.$product->image));
+        }
+
+        // delete gallery image
+        if($product->images){
+            $galleryImages = explode(',', $product->images);
+            foreach($galleryImages as $galleryImage){
+                if(File::exists(public_path('uploads/products/thumbnails/'.$galleryImage))){
+                    File::delete(public_path('uploads/products/thumbnails/'.$galleryImage));
+                }
+            }
+        }
+
+        // database theke delete
+        $product->delete();
+
+        return redirect()->route('admin.products')->with('status', 'Product deleted successfully');
     }
 
 
