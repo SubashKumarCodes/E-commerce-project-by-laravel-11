@@ -321,7 +321,7 @@
 
         <div class="d-flex justify-content-between mb-4 pb-md-2">
             <div class="breadcrumb mb-0 d-none d-md-block flex-grow-1">
-            <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
+            <a href="{{ route('home.index') }}" class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
             <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
             <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
             </div>
@@ -369,12 +369,13 @@
                     <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
                         <div class="swiper-wrapper">
                         <div class="swiper-slide">
-                            <a href="details.html"><img loading="lazy" src="assets/images/products/product_1.jpg" width="330"
-                                height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
+                            <a href="details.html"><img loading="lazy" src="{{ asset('uploads/products/thumbnails') }}/{{ $product->image }}" width="330" height="400" alt="{{ $product->name }}" class="pc__img"></a>
                         </div>
                         <div class="swiper-slide">
-                            <a href="details.html"><img loading="lazy" src="assets/images/products/product_1-1.jpg"
-                                width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
+                            @foreach (explode(",",$product->images) as $gimg)
+                                <a href="details.html"><img loading="lazy" src="{{ asset('uploads/products/thumbnails') }}/{{ $gimg }}" width="330" height="400" alt="{{ $product->name }}" class="pc__img"></a>
+                                
+                            @endforeach
                         </div>
                         </div>
                         <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11"
@@ -437,26 +438,10 @@
             @endforeach
         </div>
 
-        <nav class="shop-pages d-flex justify-content-between mt-3" aria-label="Page navigation">
-            <a href="#" class="btn-link d-inline-flex align-items-center">
-            <svg class="me-1" width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_prev_sm" />
-            </svg>
-            <span class="fw-medium">PREV</span>
-            </a>
-            <ul class="pagination mb-0">
-            <li class="page-item"><a class="btn-link px-1 mx-2 btn-link_active" href="#">1</a></li>
-            <li class="page-item"><a class="btn-link px-1 mx-2" href="#">2</a></li>
-            <li class="page-item"><a class="btn-link px-1 mx-2" href="#">3</a></li>
-            <li class="page-item"><a class="btn-link px-1 mx-2" href="#">4</a></li>
-            </ul>
-            <a href="#" class="btn-link d-inline-flex align-items-center">
-            <span class="fw-medium me-1">NEXT</span>
-            <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_next_sm" />
-            </svg>
-            </a>
-        </nav>
+        <div class="divider"></div>
+        <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
+            {{ $products->links('pagination::bootstrap-5') }}
+        </div>
         </div>
         </section>
     </main>
